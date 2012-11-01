@@ -8,17 +8,32 @@ class auth:
                    'uk': 'https://lon.identity.api.rackspacecloud.com/v2.0/'}
 
     def __init__(self):
+        """
+        Not yet implemented.
+        """
         pass
 
     def doAuthRequest(self, user, apikey):
+        """
+        Takes user and API key, builds request, executes request, and returns
+        a dict with the JSON auth response.  See Rackspace API for more information
+        on the response:
+        http://docs.rackspace.com/auth/api/v2.0/auth-client-devguide/content/Sample_Request_Response-d1e64.html
+        """
         self.auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['username'] = user
         self.auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['apiKey'] = apikey
         # Call build auth request with our JSON requst data in auth_dict
         request = self.buildAuthRequest(self, self.auth_dict)
+        # Take our request and execute it against US endpoint
         response = self.doRequest(request)
-
+        # Return the JSON response as a dict
+        return self.parseAuthResponse(self, response)
 
     def buildAuthRequest(self, auth_data, Locale='us'):
+        """
+        Builds the request against the US indentity endpoint by default;
+        returns request object
+        """
         request = urllib2.Request(self.apiEndpoint[Locale]+'tokens')
         request.add_header('Content-type', 'application/json')
         request.add_header('Accept', 'application/json')
@@ -26,12 +41,17 @@ class auth:
         return request
 
     def doRequest(self, request):
+        """
+        Executes the request; returns a dict with the "error" key with the HTTP code as value;
+        If successful, returns a response file-like obj.
+        """
         try:
             response = urllib2.urlopen(request)
         except urllib2.HTTPError as error:
             return {'error': error.code}
-        if response:
-            return response
+        else:
+            if response:
+                return response
 
     def parseAuthResponse(self, response):
         return json.loads(response.read())
