@@ -7,12 +7,6 @@ class auth:
     apiEndpoint = {'us': 'https://identity.api.rackspacecloud.com/v2.0/',
                    'uk': 'https://lon.identity.api.rackspacecloud.com/v2.0/'}
 
-    def __init__(self):
-        """
-        Not yet implemented.
-        """
-        pass
-
     def doAuthRequest(self, user, apikey):
         """
         Takes user and API key, builds request, executes request, and returns
@@ -20,21 +14,23 @@ class auth:
         on the response:
         http://docs.rackspace.com/auth/api/v2.0/auth-client-devguide/content/Sample_Request_Response-d1e64.html
         """
-        self.auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['username'] = user
-        self.auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['apiKey'] = apikey
+        auth_dict = self.auth_dict
+        auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['username'] = user
+        auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['apiKey'] = apikey
         # Call build auth request with our JSON requst data in auth_dict
-        request = self.buildAuthRequest(self, self.auth_dict)
+        request = self.buildAuthRequest(auth_dict)
         # Take our request and execute it against US endpoint
         response = self.doRequest(request)
         # Return the JSON response as a dict
-        return self.parseAuthResponse(self, response)
+        return self.parseAuthResponse(response)
 
     def buildAuthRequest(self, auth_data, Locale='us'):
         """
         Builds the request against the US indentity endpoint by default;
         returns request object
         """
-        request = urllib2.Request(self.apiEndpoint[Locale]+'tokens')
+        endpoint = (self.apiEndpoint[Locale] + 'tokens')
+        request = urllib2.Request(endpoint)
         request.add_header('Content-type', 'application/json')
         request.add_header('Accept', 'application/json')
         request.add_data(json.dumps(auth_data))
