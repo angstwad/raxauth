@@ -50,6 +50,9 @@ class auth:
                 return response
 
     def parseAuthResponse(self, response):
+        """
+        Returns a dictionary containing the (converted) JSON service catalog from Rack API
+        """
         return json.loads(response.read())
 
 
