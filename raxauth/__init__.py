@@ -28,7 +28,7 @@ class auth:
         auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['apiKey'] = self.apikey
         request = self.buildAuthRequest(auth_dict)
         response = self.doRequest(request)
-        if isinstance(response, file):
+        if isinstance(response, urllib2.addinfourl):
             self.setAuthResponse(response.read())
         elif isinstance(response, dict):
             raise RAXAPIException(response['error'])
