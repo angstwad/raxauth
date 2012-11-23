@@ -1,31 +1,31 @@
 import json
 import urllib2
 
-__author__ = 'Paul Durivage <pauldurivage@gmail.com'
+__author__ = 'Paul Durivage <pauldurivage@gmail.com>'
 
-class auth:
+class auth(object):
     """
     See Rackspace API for more information on the response:
         http://docs.rackspace.com/auth/api/v2.0/auth-client-devguide/content/Sample_Request_Response-d1e64.html
     """
-    auth_dict = {"auth": {"RAX-KSKEY:apiKeyCredentials": {"username": None, "apiKey": None}}}
-    apiEndpoint = {'us': 'https://identity.api.rackspacecloud.com/v2.0/tokens',
+    __auth_dict = {"auth": {"RAX-KSKEY:apiKeyCredentials": {"username": None, "apiKey": None}}}
+    __apiEndpoint = {'us': 'https://identity.api.rackspacecloud.com/v2.0/tokens',
                    'uk': 'https://lon.identity.api.rackspacecloud.com/v2.0/tokens'}
-    _serviceCatalog_ = {}
+    __serviceCatalog = {}
 
     def __init__(self, user, apikey, locale='us'):
-        self.user = user
-        self.apikey = apikey
-        self.locale = locale
+        self.__user = user
+        self.__apikey = apikey
+        self.__locale = locale
         self.doAuthRequest()
 
     def doAuthRequest(self):
         """
         Takes user and API key, builds request, executes request
         """
-        auth_dict = self.auth_dict
-        auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['username'] = self.user
-        auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['apiKey'] = self.apikey
+        auth_dict = self.__auth_dict
+        auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['username'] = self.__user
+        auth_dict['auth']['RAX-KSKEY:apiKeyCredentials']['apiKey'] = self.__apikey
         request = self.buildAuthRequest(auth_dict)
         response = self.doRequest(request)
         if isinstance(response, urllib2.addinfourl):
@@ -40,7 +40,7 @@ class auth:
         Builds the request against the US indentity endpoint by default;
         returns request object
         """
-        endpoint = (self.apiEndpoint[self.locale])
+        endpoint = (self.__apiEndpoint[self.__locale])
         request = urllib2.Request(endpoint)
         request.add_header('Content-type', 'application/json')
         request.add_header('Accept', 'application/json')
@@ -68,42 +68,49 @@ class auth:
 
     def getServiceCatalog(self):
         """
-        Returns full authentication response as a dictionary
+        Returns full service catalog response as a dictionary
         """
-        return self._serviceCatalog_
+        return self.__serviceCatalog
 
     def setServiceCatalog(self, serviceCatalog):
-        self._serviceCatalog_ = serviceCatalog
+        self.__serviceCatalog = serviceCatalog
 
     def getOSCloudServers(self):
-        return filter(lambda x: x['name'] == 'cloudServersOpenStack', self._serviceCatalog_['access']['serviceCatalog'])
+        return filter(lambda x: x['name'] == 'cloudServersOpenStack', self.__serviceCatalog['access']['serviceCatalog'])
 
     def getCloudFiles(self):
-        pass
+        return filter(lambda x: x['name'] == 'cloudFiles', self.__serviceCatalog['access']['serviceCatalog'])
+
+    def getCloudLB(self):
+        self.__serviceCatalog
+        return filter(lambda x: x['name'] == 'cloudLoadBalancers', self.__serviceCatalog['access']['serviceCatalog'])
 
     def getCloudFilesCDN(self):
-        pass
+        return filter(lambda x: x['name'] == 'cloudFilesCDN', self.__serviceCatalog['access']['serviceCatalog'])
 
     def getCloudDB(self):
-        pass
+        return filter(lambda x: x['name'] == 'cloudDatabases', self.__serviceCatalog['access']['serviceCatalog'])
 
     def getCloudDNS(self):
-        pass
+        return filter(lambda x: x['name'] == 'cloudDNS', self.__serviceCatalog['access']['serviceCatalog'])
 
     def getOldCloudServers(self):
-        pass
+        return filter(lambda x: x['name'] == 'cloudServers', self.__serviceCatalog['access']['serviceCatalog'])
 
     def getCloudMonitoring(self):
-        pass
+        return filter(lambda x: x['name'] == 'cloudMonitoring', self.__serviceCatalog['access']['serviceCatalog'])
 
     def getUserInfo(self):
-        pass
+        """
+        Returns dict of user rights and information
+        """
+        return self.__serviceCatalog['access']['user']
 
     def getToken(self):
         """
         Returns a dict in the form of {'expires': expiration, 'id': token}
         """
-        return self._serviceCatalog_['access']['token']
+        return self.__serviceCatalog['access']['token']
 
 class RAXAPIException(Exception):
     def __init__(self, errVal):
