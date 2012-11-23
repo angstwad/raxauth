@@ -2,8 +2,12 @@
 
 A simple module to authenticate against the Rackspace Cloud Identity (Keystone).
 
-The object returned after implementing this class and authenticating against the API is the Service Catalog as a dictionary.  The docuemntation for the service catalog response can be found [here](http://docs.rackspace.com/auth/api/v2.0/auth-client-devguide/content/Sample_Request_Response-d1e64.html "RAX API Documentation").
+Implementation is simple but still leaves a bit to be desired at the moment:
 
-Furture updates will include methods to parse the Service Catalog for useful data.
+    >>> a = raxauth.auth('<username>', '<apikey>')
+    >>> print a.getToken()['id']
+    asdasdw2-fdds-asda-asda-asdadasdas
+
+There are plenty of methods to return the data you're looking from from the service catalog as dictionaries.  Future updates will return nothing but pretty data -- the current results are functional but not very Pythonic.
 
 *This module is extremely immature.*
