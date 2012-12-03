@@ -54,7 +54,10 @@ class Authenticate(object):
         try:
             response = urllib2.urlopen(request)
         except urllib2.HTTPError as error:
-            return {'error': error.code}
+            return {'error': 'Non-200 server response: ' + repr(error.code)}
+        except urllib2.URLError as error:
+            return {'error': 'Cannot contact remote host'}
+
         else:
             if response:
                 return response
@@ -83,7 +86,7 @@ class auth(object):
         a = Authenticate(user, apikey, locale=locale)
         self.__serviceCatalog = a.getServiceCatalog()
 
-    def getOSCloudServers(self, region=None, key='publicURL'):
+    def getOSServerEndpoint(self, region=None, key='publicURL'):
         """
         Regions as of this writing are either "ORD", "DFW", or "LON".
         Returns a string public URL for the endpoint by default.  Will return the appropriate key if explicicity defined.
@@ -105,7 +108,7 @@ class auth(object):
         elif region == 'ALL':
             return selection
 
-    def getOldCloudServers(self, region=None, key='publicURL'):
+    def getServerEndpoint(self, region=None, key='publicURL'):
         """
         If region is 'all', it returns the value specified by the key, by default
         returning the public URL of the endpoint as a string.
@@ -117,10 +120,12 @@ class auth(object):
         elif region is None:
             return selection['endpoints'][0][key]
 
-    def getCloudFiles(self, region=None, key='publicURL'):
+    def getFilesEndpoint(self, region=None, key='publicURL'):
         """
+        If region is the none, return default datacenter 'key' value;
+        If region is DFW or ORD, return value of 'key' for that endpoint.
+        If region is all, the full Cloud Files endpoint dictionary is returned.
         """
-        # TODO: Docstring
         region = self.__toUpper(region)
         selection = filter(lambda x: x['name'] == 'cloudFiles', self.__serviceCatalog['access']['serviceCatalog'])[0]
         if region is None:
@@ -136,13 +141,13 @@ class auth(object):
         elif region == 'ALL':
             return selection
 
-    def getCloudLB(self):
+    def getLoadBalEndpoint(self):
         return filter(lambda x: x['name'] == 'cloudLoadBalancers', self.__serviceCatalog['access']['serviceCatalog'])[0]
 
-    def getCloudFilesCDN(self):
+    def getFilesCDNEndpoint(self):
         return filter(lambda x: x['name'] == 'cloudFilesCDN', self.__serviceCatalog['access']['serviceCatalog'])[0]
 
-    def getCloudDB(self):
+    def getDBEndpoint(self):
         return filter(lambda x: x['name'] == 'cloudDatabases', self.__serviceCatalog['access']['serviceCatalog'])[0]
 
     def getCloudDNS(self):
