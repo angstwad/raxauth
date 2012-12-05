@@ -2,7 +2,7 @@ import json
 import urllib2
 from .exceptions import RAXAPIException
 
-__author__ = 'Paul Durivage <paul.durivage@rackspace.com>'
+__author__ = 'Paul Durivage <pauldurivage@gmail.com>'
 
 class Authenticate(object):
     __auth_dict = {"auth": {
