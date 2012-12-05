@@ -33,7 +33,7 @@ The methods return data as strings depending on what you're looking for.  The de
 
 Returns:
 
-	https://ord.servers.api.rackspacecloud.com/v2/648600
+	https://ord.servers.api.rackspacecloud.com/v2/555555
 	https://ord.servers.api.rackspacecloud.com/v2
 
 **Works like a champ.**  Or so I think.  
