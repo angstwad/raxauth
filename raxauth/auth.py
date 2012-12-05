@@ -141,20 +141,73 @@ class auth(object):
         elif region == 'ALL':
             return selection
 
-    def getLoadBalEndpoint(self):
-        return filter(lambda x: x['name'] == 'cloudLoadBalancers', self.__serviceCatalog['access']['serviceCatalog'])[0]
+    def getLoadBalEndpoint(self, region=None, key='publicURL'):
+        """
+        If region is the none, return default datacenter 'key' value;
+        If region is DFW or ORD, return value of 'key' for that endpoint.
+        If region is all, the full Cloud Load Balancer endpoint dictionary is returned.
+        """
+        selection = filter(lambda x: x['name'] == 'cloudLoadBalancers', self.__serviceCatalog['access']['serviceCatalog'])[0]
+        if region is None:
+            regionDict = filter(lambda x: x['region'] == self.__serviceCatalog['access']['user']['RAX-AUTH:defaultRegion'],
+                selection['endpoints'])[0]
+            return regionDict[key]
+        elif region == 'DFW':
+            regionDict = filter(lambda x: x['region'] == 'DFW', selection['endpoints'])[0]
+            return regionDict[key]
+        elif region == 'ORD':
+            regionDict = filter(lambda x: x['region'] == 'ORD', selection['endpoints'])[0]
+            return regionDict[key]
+        elif region == 'ALL':
+            return selection
 
-    def getFilesCDNEndpoint(self):
-        return filter(lambda x: x['name'] == 'cloudFilesCDN', self.__serviceCatalog['access']['serviceCatalog'])[0]
+    def getFilesCDNEndpoint(self, region=None, key='publicURL'):
+        """
+        If region is the none, return default datacenter 'key' value;
+        If region is DFW or ORD, return value of 'key' for that endpoint.
+        If region is all, the full Cloud Files CDN endpoint dictionary is returned.
+        """
+        selection = filter(lambda x: x['name'] == 'cloudFilesCDN', self.__serviceCatalog['access']['serviceCatalog'])[0]
+        if region is None:
+            regionDict = filter(lambda x: x['region'] == self.__serviceCatalog['access']['user']['RAX-AUTH:defaultRegion'],
+                selection['endpoints'])[0]
+            return regionDict[key]
+        elif region == 'DFW':
+            regionDict = filter(lambda x: x['region'] == 'DFW', selection['endpoints'])[0]
+            return regionDict[key]
+        elif region == 'ORD':
+            regionDict = filter(lambda x: x['region'] == 'ORD', selection['endpoints'])[0]
+            return regionDict[key]
+        elif region == 'ALL':
+            return selection
 
-    def getDBEndpoint(self):
-        return filter(lambda x: x['name'] == 'cloudDatabases', self.__serviceCatalog['access']['serviceCatalog'])[0]
+    def getDBEndpoint(self, region=None, key='publicURL'):
+        """
+        If region is the none, return default datacenter 'key' value;
+        If region is DFW or ORD, return value of 'key' for that endpoint.
+        If region is all, the full Cloud Databases endpoint dictionary is returned.
+        """
+        selection = filter(lambda x: x['name'] == 'cloudDatabases', self.__serviceCatalog['access']['serviceCatalog'])[0]
+        if region is None:
+            regionDict = filter(lambda x: x['region'] == self.__serviceCatalog['access']['user']['RAX-AUTH:defaultRegion'],
+                selection['endpoints'])[0]
+            return regionDict[key]
+        elif region == 'DFW':
+            regionDict = filter(lambda x: x['region'] == 'DFW', selection['endpoints'])[0]
+            return regionDict[key]
+        elif region == 'ORD':
+            regionDict = filter(lambda x: x['region'] == 'ORD', selection['endpoints'])[0]
+            return regionDict[key]
+        elif region == 'ALL':
+            return selection
 
     def getCloudDNS(self):
-        return filter(lambda x: x['name'] == 'cloudDNS', self.__serviceCatalog['access']['serviceCatalog'])[0]
+        """ Feature complete; Only returns on endpoint. """
+        return filter(lambda x: x['name'] == 'cloudDNS', self.__serviceCatalog['access']['serviceCatalog'])[0]['endpoints'][0]['publicURL']
 
     def getCloudMonitoring(self):
-        return filter(lambda x: x['name'] == 'cloudMonitoring', self.__serviceCatalog['access']['serviceCatalog'])[0]
+        """ Feature complete; Only returns on endpoint. """
+        return filter(lambda x: x['name'] == 'cloudMonitoring', self.__serviceCatalog['access']['serviceCatalog'])[0]['endpoints'][0]['publicURL']
 
     def getUserInfo(self):
         """
