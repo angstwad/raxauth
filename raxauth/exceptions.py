@@ -1,4 +1,4 @@
-__author__ = 'Paul Durivage <pauldurivage@gmail.com>'
+__author__ = 'Paul Durivage <paul.durivage@rackspace.com>'
 
 class RAXAPIException(Exception):
     def __init__(self, errVal):

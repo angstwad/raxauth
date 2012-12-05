@@ -14,7 +14,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__author__ = 'Paul Durivage <pauldurivage@gmail.com>'
+__author__ = 'Paul Durivage <paul.durivage@rackspace.com>'
 
 from .auth import auth
 from .exceptions import RAXAPIException
