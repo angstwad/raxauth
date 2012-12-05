@@ -26,7 +26,7 @@ Returns:
     https://dns.api.rackspacecloud.com/v1.0/5555555
     https://monitoring.api.rackspacecloud.com/v1.0/555555
 
-The methods return data as strigns depending on what you're looking for.  The default will return the proper endpoint URL from your default datacenter, but you can get *everything* or you can get just an endpoint.  It'll also return exacltly the key you're looking for from the appropriate service!
+The methods return data as strings depending on what you're looking for.  The default will return the proper endpoint URL from your default datacenter, but you can get *everything*, *or* you can get just an endpoint.  It'll also return exacltly the key you're looking for from the appropriate service!
 
     print a.getOSServerEndpoint(region='ORD')
     print a.getOSServerEndpoint(region='ORD', key='versionInfo')
