@@ -20,7 +20,7 @@ Returns:
     https://dfw.servers.api.rackspacecloud.com/v2/5555555
     https://servers.api.rackspacecloud.com/v1.0/5555555
     https://storage101.dfw1.clouddrive.com/v1/MossoCloudFS_some-long-UUID
-    https://dfw.loadbalancers.api.rackspacecloud.com/v1.0/648600
+    https://dfw.loadbalancers.api.rackspacecloud.com/v1.0/5555555
     https://cdn1.clouddrive.com/v1/MossoCloudFS_some-long-UUID
     https://dfw.databases.api.rackspacecloud.com/v1.0/5555555
     https://dns.api.rackspacecloud.com/v1.0/5555555
