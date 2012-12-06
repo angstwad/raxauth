@@ -15,7 +15,7 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 __author__ = 'Paul Durivage <pauldurivage@gmail.com>'
-__version__ = '1.0'
+__version__ = '0.2.1'
 
 from .auth import auth
 from .exceptions import RAXAPIException
